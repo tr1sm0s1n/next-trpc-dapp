@@ -3,12 +3,19 @@ import { useState } from "react";
 import {
   Input,
   FormControl,
-  FormLabel,
   Container,
   Heading,
   Select,
   Button,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  useDisclosure,
+  ModalBody,
 } from "@chakra-ui/react";
+import { trpc } from "../utils/trpc";
 
 export default function Home() {
   const [id, setId] = useState("");
@@ -17,7 +24,11 @@ export default function Home() {
   const [date, setDate] = useState("");
   const [grade, setGrade] = useState("");
 
-  const handleSubmit = () => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const issue = trpc.issue.useMutation();
+
+  const handleSubmit = async () => {
     const certificate = {
       id,
       name,
@@ -26,6 +37,8 @@ export default function Home() {
       date,
     };
     console.log(certificate);
+    issue.mutate(certificate);
+    onOpen();
   };
 
   return (
@@ -87,6 +100,14 @@ export default function Home() {
             Submit
           </Button>
         </Container>
+        <Modal isOpen={isOpen} onClose={onClose}>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Success</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>{issue.data?.message}</ModalBody>
+          </ModalContent>
+        </Modal>
       </section>
     </>
   );
