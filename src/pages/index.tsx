@@ -21,8 +21,8 @@ export default function Home() {
   const [id, setId] = useState("");
   const [name, setName] = useState("");
   const [course, setCourse] = useState("");
-  const [date, setDate] = useState("");
   const [grade, setGrade] = useState("");
+  const [date, setDate] = useState("");
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -39,6 +39,11 @@ export default function Home() {
     console.log(certificate);
     issue.mutate(certificate);
     onOpen();
+    setId("");
+    setName("");
+    setCourse("");
+    setGrade("");
+    setDate("");
   };
 
   return (
@@ -62,6 +67,7 @@ export default function Home() {
               type="text"
               placeholder="Enter Certificate ID"
               onChange={(e) => setId(e.currentTarget.value)}
+              value={id}
             />
           </FormControl>
           <FormControl my={2}>
@@ -69,16 +75,25 @@ export default function Home() {
               type="text"
               placeholder="Enter Candidate Name"
               onChange={(e) => setName(e.currentTarget.value)}
+              value={name}
             />
           </FormControl>
-          <Select my={2} onChange={(e) => setCourse(e.currentTarget.value)}>
+          <Select
+            my={2}
+            onChange={(e) => setCourse(e.currentTarget.value)}
+            value={course}
+          >
             <option hidden>Select Course</option>
             <option value="CBA">Certified Blockchain Associate</option>
             <option value="CED">Certified Ethereum Developer</option>
             <option value="CHF">Certified Hyperledger Fabric Developer</option>
             <option value="CBR">Certified Blockchain Architect</option>
           </Select>
-          <Select my={2} onChange={(e) => setGrade(e.currentTarget.value)}>
+          <Select
+            my={2}
+            onChange={(e) => setGrade(e.currentTarget.value)}
+            value={grade}
+          >
             <option hidden>Select Grade</option>
             <option value="S">S</option>
             <option value="A">A</option>
@@ -89,6 +104,7 @@ export default function Home() {
             <Input
               type="date"
               onChange={(e) => setDate(e.currentTarget.value)}
+              value={date}
             />
           </FormControl>
           <Button
