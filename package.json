@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "deploy": "cd hardhat && npx hardhat run scripts/deploy.ts"
   },
   "dependencies": {
     "@chakra-ui/icons": "^2.0.17",
@@ -30,5 +31,9 @@
     "react-dom": "18.2.0",
     "typescript": "4.9.5",
     "zod": "^3.20.6"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^2.0.2",
+    "hardhat": "^2.13.0"
   }
 }
