@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "test": "cd hardhat && npx hardhat test",
     "deploy": "cd hardhat && npx hardhat run scripts/deploy.ts"
   },
   "dependencies": {

@@ -14,12 +14,16 @@ async function main() {
 
   console.log(`${details.deployer} deployed ${details.contract}`);
 
-  writeFile("../src/utils/details.json", JSON.stringify(details, null, 2), (err) => {
-    if (err) {
-      return console.log(err);
+  writeFile(
+    "../src/utils/details.json",
+    JSON.stringify(details, null, 2),
+    (err) => {
+      if (err) {
+        return console.log(err);
+      }
+      return console.log("Details are saved!!");
     }
-    return console.log("Details are saved!!");
-  });
+  );
 }
 
 // We recommend this pattern to be able to use async/await everywhere
