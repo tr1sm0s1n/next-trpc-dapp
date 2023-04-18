@@ -3,6 +3,7 @@ pragma solidity ^0.8.18;
 
 contract Cert {
     address admin;
+    event Issued(uint256, string, string);
 
     constructor() {
         admin = msg.sender;
@@ -14,21 +15,22 @@ contract Cert {
     }
 
     struct Certificate {
-        string course;
         string name;
+        string course;
         string grade;
         string date;
     }
 
-    mapping(string => Certificate) public Certificates;
+    mapping(uint256 => Certificate) public Certificates;
 
     function issue(
-        string memory _id,
-        string memory _course,
+        uint256 _id,
         string memory _name,
+        string memory _course,
         string memory _grade,
         string memory _date
     ) public onlyAdmin {
-        Certificates[_id] = Certificate(_course, _name, _grade, _date);
+        Certificates[_id] = Certificate(_name, _course, _grade, _date);
+        emit Issued(_id, _course, _grade);
     }
 }
