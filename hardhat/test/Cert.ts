@@ -1,5 +1,4 @@
 import { loadFixture } from "@nomicfoundation/hardhat-network-helpers";
-import { Cert__factory } from "../typechain-types";
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
 
@@ -7,7 +6,7 @@ describe("Cert", function () {
   async function deployCertFixture() {
     const [admin, other] = await ethers.getSigners();
 
-    const Cert: Cert__factory = await ethers.getContractFactory("Cert");
+    const Cert = await ethers.getContractFactory("Cert");
     const cert = await Cert.deploy();
 
     return { cert, admin, other };
