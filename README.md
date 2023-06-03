@@ -2,8 +2,7 @@
 
 DApp with end-to-end typesafe APIs for Smart Contract interaction.
 
-
-## 🛠 Building With
+## 🛠 Built With
 
 <div align="left">
 <a href="https://nodejs.org/en/" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/DEMYSTIF/DEMYSTIF/main/assets/icons/nodejs.svg" width="36" height="36" alt="NodeJS" /></a>
@@ -17,3 +16,47 @@ DApp with end-to-end typesafe APIs for Smart Contract interaction.
 <a href="https://chakra-ui.com/" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/DEMYSTIF/DEMYSTIF/main/assets/icons/chakra-ui.svg" width="36" height="36" alt="ChakraUI" /></a>
 </div>
 
+## ⚙️ Run Locally
+
+Clone the project
+
+```bash
+git clone https://github.com/DEMYSTIF/next-trpc-dapp.git
+cd next-trpc-dapp
+```
+
+Install dependencies
+
+```bash
+npm install
+```
+
+Test contract
+
+```bash
+npm test
+```
+
+Install ganache globally
+
+```bash
+npm install -g ganache
+```
+
+Run ganache on port 8545 (default)
+
+```bash
+ganache -i <network_id> -p 8545
+```
+
+Deploy contract
+
+```bash
+npm run deploy
+```
+
+Start the application
+
+```bash
+npm run dev
+```
