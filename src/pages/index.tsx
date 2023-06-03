@@ -15,7 +15,7 @@ import {
   useDisclosure,
   ModalBody,
 } from "@chakra-ui/react";
-import { trpc } from "../utils/trpc";
+import { trpc } from "@/utils/trpc";
 
 export default function Home() {
   const [id, setId] = useState("");
