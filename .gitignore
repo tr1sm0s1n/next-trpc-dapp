@@ -39,3 +39,6 @@ next-env.d.ts
 typechain-types
 artifacts
 cache
+src/utils/build-info
+src/utils/contracts
+src/utils/details.json
