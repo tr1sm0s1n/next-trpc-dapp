@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { useState } from "react";
+import { KeyboardEvent, useState } from "react";
 import {
   Input,
   FormControl,
@@ -18,15 +18,19 @@ import {
 import { trpc } from "@/utils/trpc";
 
 export default function Home() {
-  const [id, setId] = useState("");
+  const [id, setId] = useState<number | null>(null);
   const [name, setName] = useState("");
   const [course, setCourse] = useState("");
   const [grade, setGrade] = useState("");
   const [date, setDate] = useState("");
 
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [param, setParam] = useState<number | null>(null);
+
+  const { isOpen: isM1, onOpen: openM1, onClose: closeM1 } = useDisclosure();
+  const { isOpen: isM2, onOpen: openM2, onClose: closeM2 } = useDisclosure();
 
   const issue = trpc.issue.useMutation();
+  const fetch = trpc.fetch.useQuery({ id: param });
 
   const handleSubmit = async () => {
     const certificate = {
@@ -38,12 +42,21 @@ export default function Home() {
     };
     console.log(certificate);
     issue.mutate(certificate);
-    onOpen();
-    setId("");
+    openM1();
+    setId(null);
     setName("");
     setCourse("");
     setGrade("");
     setDate("");
+  };
+
+  const handleSearch = async (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      setParam(Number(e.currentTarget.value));
+      openM2();
+      console.log(fetch.data);
+      console.log("trgieer");
+    }
   };
 
   return (
@@ -64,10 +77,11 @@ export default function Home() {
           </Heading>
           <FormControl my={2}>
             <Input
-              type="text"
+              type="number"
+              min={0}
               placeholder="Enter Certificate ID"
-              onChange={(e) => setId(e.currentTarget.value)}
-              value={id}
+              onChange={(e) => setId(Number(e.currentTarget.value))}
+              value={id ? id : ""}
             />
           </FormControl>
           <FormControl my={2}>
@@ -108,7 +122,7 @@ export default function Home() {
             />
           </FormControl>
           <Button
-            mt={4}
+            my={2}
             colorScheme="teal"
             type="submit"
             onClick={handleSubmit}
@@ -116,15 +130,57 @@ export default function Home() {
             Submit
           </Button>
         </Container>
-        <Modal isOpen={isOpen} onClose={onClose}>
-          <ModalOverlay />
+      </section>
+      <section>
+        <Container centerContent my={8}>
+          <Heading as="h4" size="md" my={2} noOfLines={1}>
+            Fetch Certificate
+          </Heading>
+          <FormControl my={2}>
+            <Input
+              type="number"
+              min={0}
+              placeholder="Enter Certificate ID"
+              onKeyDown={handleSearch}
+              // value={param ? param : ""}
+            />
+          </FormControl>
+        </Container>
+      </section>
+      <Modal isOpen={isM1} onClose={closeM1}>
+        <ModalOverlay />
+        {issue.isSuccess ? (
           <ModalContent>
             <ModalHeader>Success</ModalHeader>
             <ModalCloseButton />
             <ModalBody>{issue.data?.message}</ModalBody>
           </ModalContent>
-        </Modal>
-      </section>
+        ) : (
+          <ModalContent>
+            <ModalHeader>Error</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>{issue.error?.message}</ModalBody>
+          </ModalContent>
+        )}
+      </Modal>
+      <Modal isOpen={isM2} onClose={closeM2}>
+        <ModalOverlay />
+        {fetch.isSuccess && (
+          <ModalContent>
+            <ModalHeader mx={"auto"}>Certificate</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <Container centerContent>
+                <p>Name: {fetch.data?.name}</p>
+                <p>Course: {fetch.data?.course}</p>
+                <p>Grade: {fetch.data?.grade}</p>
+                <p>ID: {fetch.data?.id}</p>
+                <p>Date: {fetch.data?.date}</p>
+              </Container>
+            </ModalBody>
+          </ModalContent>
+        )}
+      </Modal>
     </>
   );
 }
