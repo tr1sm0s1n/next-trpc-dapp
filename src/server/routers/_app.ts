@@ -40,13 +40,38 @@ export const appRouter = router({
 
   fetch: procedure
     .input(
-      z.object({
-        id: z.number().nullish(),
-      })
-      .nullish()
+      z
+        .object({
+          id: z.number().nullish(),
+        })
+        .nullish()
     )
-    .query((req) => {
-      return req.input?.id;
+    .output(
+      z
+        .object({
+          id: z.number(),
+          name: z.string(),
+          course: z.string(),
+          grade: z.string(),
+          date: z.string(),
+        })
+        .nullish()
+    )
+    .query(async (req) => {
+      if (req.input?.id) {
+        const certificate: string[] = await instance.Certificates(
+          req.input.id
+        );
+        console.log(certificate);
+
+        return {
+          id: req.input.id,
+          name: certificate[0],
+          course: certificate[1],
+          grade: certificate[2],
+          date: certificate[3],
+        };
+      }
     }),
 });
 
