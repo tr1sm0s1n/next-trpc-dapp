@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "test": "cd hardhat && npx hardhat test",
-    "deploy": "cd hardhat && npx hardhat run scripts/deploy.ts"
+    "deploy": "cd hardhat && npx hardhat run scripts/deploy.ts --network ganache"
   },
   "dependencies": {
     "@chakra-ui/icons": "^2.0.17",
