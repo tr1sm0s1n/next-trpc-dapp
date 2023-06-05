@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { KeyboardEvent, useState } from "react";
+import { useState } from "react";
 import {
   Input,
   FormControl,
@@ -14,6 +14,8 @@ import {
   ModalCloseButton,
   useDisclosure,
   ModalBody,
+  Flex,
+  Box,
 } from "@chakra-ui/react";
 import { trpc } from "@/utils/trpc";
 
@@ -30,7 +32,7 @@ export default function Home() {
   const { isOpen: isM2, onOpen: openM2, onClose: closeM2 } = useDisclosure();
 
   const issue = trpc.issue.useMutation();
-  const fetch = trpc.fetch.useQuery({ id: param });
+  const fetch = trpc.fetch.useMutation();
 
   const handleSubmit = async () => {
     const certificate = {
@@ -40,7 +42,6 @@ export default function Home() {
       grade,
       date,
     };
-    console.log(certificate);
     issue.mutate(certificate);
     openM1();
     setId(null);
@@ -50,13 +51,10 @@ export default function Home() {
     setDate("");
   };
 
-  const handleSearch = async (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      setParam(Number(e.currentTarget.value));
-      openM2();
-      console.log(fetch.data);
-      console.log("trgieer");
-    }
+  const handleSearch = async () => {
+    fetch.mutate({ id: param });
+    openM2();
+    setParam(null);
   };
 
   return (
@@ -136,47 +134,80 @@ export default function Home() {
           <Heading as="h4" size="md" my={2} noOfLines={1}>
             Fetch Certificate
           </Heading>
-          <FormControl my={2}>
-            <Input
-              type="number"
-              min={0}
-              placeholder="Enter Certificate ID"
-              onKeyDown={handleSearch}
-              // value={param ? param : ""}
-            />
-          </FormControl>
+          <Flex w="full">
+            <FormControl mx={2} my={2}>
+              <Input
+                type="number"
+                min={0}
+                placeholder="Enter Certificate ID"
+                onChange={(e) => setParam(Number(e.currentTarget.value))}
+                value={param ? param : ""}
+              />
+            </FormControl>
+            <Button
+              mx={2}
+              my={2}
+              colorScheme="teal"
+              type="submit"
+              onClick={handleSearch}
+            >
+              Search
+            </Button>
+          </Flex>
         </Container>
       </section>
       <Modal isOpen={isM1} onClose={closeM1}>
         <ModalOverlay />
-        {issue.isSuccess ? (
-          <ModalContent>
-            <ModalHeader>Success</ModalHeader>
-            <ModalCloseButton />
-            <ModalBody>{issue.data?.message}</ModalBody>
-          </ModalContent>
-        ) : (
+        {issue.isError ? (
           <ModalContent>
             <ModalHeader>Error</ModalHeader>
             <ModalCloseButton />
             <ModalBody>{issue.error?.message}</ModalBody>
           </ModalContent>
+        ) : (
+          <ModalContent>
+            <ModalHeader>Success</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>{issue.data?.message}</ModalBody>
+          </ModalContent>
         )}
       </Modal>
       <Modal isOpen={isM2} onClose={closeM2}>
         <ModalOverlay />
-        {fetch.isSuccess && (
+        {fetch.isError ? (
+          <ModalContent>
+            <ModalHeader>Error</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>{fetch.error?.message}</ModalBody>
+          </ModalContent>
+        ) : (
           <ModalContent>
             <ModalHeader mx={"auto"}>Certificate</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
               <Container centerContent>
-                <p>Name: {fetch.data?.name}</p>
-                <p>Course: {fetch.data?.course}</p>
-                <p>Grade: {fetch.data?.grade}</p>
-                <p>ID: {fetch.data?.id}</p>
-                <p>Date: {fetch.data?.date}</p>
+                <Heading as="h4" size="lg" my={2} noOfLines={1}>
+                  AKA-DEMY
+                </Heading>
+                <p>This is to certify that</p>
+                <Heading as="h4" size="md" my={2} noOfLines={1}>
+                  {fetch.data?.name}
+                </Heading>
+                <p>has successfully completed</p>
+                <Heading as="h5" size="md" my={2} noOfLines={1}>
+                  {fetch.data?.course}
+                </Heading>
+                <p>with</p>
+                <Heading as="h5" size="md" my={2} noOfLines={1}>
+                  {fetch.data?.grade}
+                </Heading>
               </Container>
+              <Flex>
+                <Box>
+                  <p>ID: {fetch.data?.id}</p>
+                  <p>Date: {fetch.data?.date}</p>
+                </Box>
+              </Flex>
             </ModalBody>
           </ModalContent>
         )}
