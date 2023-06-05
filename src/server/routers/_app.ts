@@ -57,20 +57,29 @@ export const appRouter = router({
         })
         .nullish()
     )
-    .query(async (req) => {
+    .mutation(async (req) => {
       if (req.input?.id) {
-        const certificate: string[] = await instance.Certificates(
-          req.input.id
-        );
+        const certificate: string[] = await instance.Certificates(req.input.id);
         console.log(certificate);
-
-        return {
-          id: req.input.id,
-          name: certificate[0],
-          course: certificate[1],
-          grade: certificate[2],
-          date: certificate[3],
-        };
+        if (certificate[0]) {
+          return {
+            id: req.input.id,
+            name: certificate[0],
+            course: certificate[1],
+            grade: certificate[2],
+            date: certificate[3],
+          };
+        } else {
+          throw new TRPCError({
+            code: "NOT_FOUND",
+            message: `No certificate issued for ${req.input.id}`,
+          });
+        }
+      } else {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Provide a valid certificate ID",
+        });
       }
     }),
 });
