@@ -37,16 +37,10 @@ Test contract
 npm test
 ```
 
-Install ganache globally
+Run hardhat node on port 8545
 
 ```bash
-npm install -g ganache
-```
-
-Run ganache on port 8545 (default)
-
-```bash
-ganache -i <network_id> -p 8545
+npm run node
 ```
 
 Deploy contract
