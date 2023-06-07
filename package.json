@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "next lint",
     "test": "cd hardhat && npx hardhat test",
-    "deploy": "cd hardhat && npx hardhat run scripts/deploy.ts --network ganache"
+    "node": "cd hardhat && npx hardhat node",
+    "deploy": "cd hardhat && npx hardhat run scripts/deploy.ts --network local",
+    "postbuild": "cd hardhat && nohup npx hardhat node > hardhat.log 2>&1 &"
   },
   "dependencies": {
     "@chakra-ui/icons": "^2.0.17",
