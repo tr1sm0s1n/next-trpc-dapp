@@ -10,7 +10,7 @@
     "test": "cd hardhat && npx hardhat test",
     "node": "cd hardhat && npx hardhat node",
     "deploy": "cd hardhat && npx hardhat run scripts/deploy.ts --network local",
-    "postbuild": "cd hardhat && nohup npx hardhat node > hardhat.log 2>&1 &"
+    "prebuild": "cd hardhat && nohup npx hardhat node > node.log 2>&1 & cd hardhat && npx hardhat run scripts/deploy.ts --network local"
   },
   "dependencies": {
     "@chakra-ui/icons": "^2.0.17",
