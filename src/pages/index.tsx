@@ -16,6 +16,7 @@ import {
   ModalBody,
   Flex,
   Box,
+  Spacer,
 } from "@chakra-ui/react";
 import { trpc } from "@/utils/trpc";
 
@@ -96,10 +97,18 @@ export default function Home() {
             value={course}
           >
             <option hidden>Select Course</option>
-            <option value="CBA">Certified Blockchain Associate</option>
-            <option value="CED">Certified Ethereum Developer</option>
-            <option value="CHF">Certified Hyperledger Fabric Developer</option>
-            <option value="CBR">Certified Blockchain Architect</option>
+            <option value="Certified Blockchain Associate">
+              Certified Blockchain Associate
+            </option>
+            <option value="Certified Ethereum Developer">
+              Certified Ethereum Developer
+            </option>
+            <option value="Certified Hyperledger Fabric Developer">
+              Certified Hyperledger Fabric Developer
+            </option>
+            <option value="Certified Blockchain Architect">
+              Certified Blockchain Architect
+            </option>
           </Select>
           <Select
             my={2}
@@ -172,7 +181,7 @@ export default function Home() {
           </ModalContent>
         )}
       </Modal>
-      <Modal isOpen={isM2} onClose={closeM2}>
+      <Modal size={"lg"} isOpen={isM2} onClose={closeM2}>
         <ModalOverlay />
         {fetch.isError ? (
           <ModalContent>
@@ -186,11 +195,11 @@ export default function Home() {
             <ModalCloseButton />
             <ModalBody>
               <Container centerContent>
-                <Heading as="h4" size="lg" my={2} noOfLines={1}>
+                <Heading as="h4" size="md" mb={8} noOfLines={1}>
                   AKA-DEMY
                 </Heading>
                 <p>This is to certify that</p>
-                <Heading as="h4" size="md" my={2} noOfLines={1}>
+                <Heading as="h4" size="md" my={4} noOfLines={1}>
                   {fetch.data?.name}
                 </Heading>
                 <p>has successfully completed</p>
@@ -202,11 +211,12 @@ export default function Home() {
                   {fetch.data?.grade}
                 </Heading>
               </Container>
-              <Flex>
-                <Box>
-                  <p>ID: {fetch.data?.id}</p>
-                  <p>Date: {fetch.data?.date}</p>
-                </Box>
+              <Flex mt={8} mb={4} mx={2}>
+                {/* <Box> */}
+                <p>Date: {fetch.data?.date}</p>
+                <Spacer />
+                <p>Certificate ID: {fetch.data?.id}</p>
+                {/* </Box> */}
               </Flex>
             </ModalBody>
           </ModalContent>
