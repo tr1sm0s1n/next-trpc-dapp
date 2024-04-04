@@ -35,11 +35,14 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# hardhat
-typechain-types
-artifacts
-cache
-src/utils/build-info
-src/utils/contracts
-src/utils/details.json
-node.log
+# Hardhat files
+/cache
+/artifacts
+
+# TypeChain files
+/typechain
+/typechain-types
+
+# solidity-coverage files
+/coverage
+/coverage.json
