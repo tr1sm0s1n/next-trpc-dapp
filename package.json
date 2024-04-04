@@ -7,10 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "cd hardhat && npx hardhat test",
-    "node": "cd hardhat && npx hardhat node",
-    "deploy": "cd hardhat && npx hardhat run scripts/deploy.ts --network local",
-    "prebuild": "cd hardhat && nohup npx hardhat node > node.log 2>&1 & cd hardhat && npx hardhat run scripts/deploy.ts --network local"
+    "test": "hardhat test",
+    "node": "hardhat node",
+    "deploy": "hardhat ignition deploy ignition/modules/Cert.ts --network local"
   },
   "dependencies": {
     "@chakra-ui/icons": "^2.1.1",
