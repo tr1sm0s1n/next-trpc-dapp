@@ -1,5 +1,5 @@
-import Head from "next/head";
-import { useState } from "react";
+import Head from 'next/head';
+import { useState } from 'react';
 import {
   Input,
   FormControl,
@@ -17,15 +17,15 @@ import {
   Flex,
   Box,
   Spacer,
-} from "@chakra-ui/react";
-import { trpc } from "@/utils/trpc";
+} from '@chakra-ui/react';
+import { trpc } from '@/utils/trpc';
 
 export default function Home() {
   const [id, setId] = useState<number | null>(null);
-  const [name, setName] = useState("");
-  const [course, setCourse] = useState("");
-  const [grade, setGrade] = useState("");
-  const [date, setDate] = useState("");
+  const [name, setName] = useState('');
+  const [course, setCourse] = useState('');
+  const [grade, setGrade] = useState('');
+  const [date, setDate] = useState('');
 
   const [param, setParam] = useState<number | null>(null);
 
@@ -46,10 +46,10 @@ export default function Home() {
     issue.mutate(certificate);
     openM1();
     setId(null);
-    setName("");
-    setCourse("");
-    setGrade("");
-    setDate("");
+    setName('');
+    setCourse('');
+    setGrade('');
+    setDate('');
   };
 
   const handleSearch = async () => {
@@ -80,7 +80,7 @@ export default function Home() {
               min={0}
               placeholder="Enter Certificate ID"
               onChange={(e) => setId(Number(e.currentTarget.value))}
-              value={id ? id : ""}
+              value={id ? id : ''}
             />
           </FormControl>
           <FormControl my={2}>
@@ -150,7 +150,7 @@ export default function Home() {
                 min={0}
                 placeholder="Enter Certificate ID"
                 onChange={(e) => setParam(Number(e.currentTarget.value))}
-                value={param ? param : ""}
+                value={param ? param : ''}
               />
             </FormControl>
             <Button
@@ -181,7 +181,7 @@ export default function Home() {
           </ModalContent>
         )}
       </Modal>
-      <Modal size={"lg"} isOpen={isM2} onClose={closeM2}>
+      <Modal size={'lg'} isOpen={isM2} onClose={closeM2}>
         <ModalOverlay />
         {fetch.isError ? (
           <ModalContent>
@@ -191,7 +191,7 @@ export default function Home() {
           </ModalContent>
         ) : (
           <ModalContent>
-            <ModalHeader mx={"auto"}>Certificate</ModalHeader>
+            <ModalHeader mx={'auto'}>Certificate</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
               <Container centerContent>
