@@ -1,8 +1,8 @@
-import { z } from "zod";
-import { procedure, router } from "../trpc";
-import { instance, provider } from "@/utils/instance";
-import { Transaction } from "ethers";
-import { TRPCError } from "@trpc/server";
+import { z } from 'zod';
+import { procedure, router } from '../trpc';
+import { getInstance, provider } from '@/utils/instance';
+import { Contract, Transaction } from 'ethers';
+import { TRPCError } from '@trpc/server';
 
 export const appRouter = router({
   issue: procedure
@@ -13,27 +13,29 @@ export const appRouter = router({
         course: z.string(),
         grade: z.string(),
         date: z.string(),
-      })
+      }),
     )
     .mutation(async (req) => {
+      console.log(req.input);
+
+      const instance: Contract = await getInstance();
       const trx: Transaction = await instance.issue(
         req.input.id,
         req.input.name,
         req.input.course,
         req.input.grade,
-        req.input.date
+        req.input.date,
       );
-      console.log(trx);
       const receipt = await provider.getTransactionReceipt(trx.hash!);
       console.log(receipt);
-      if (!!receipt.status) {
+      if (!!receipt?.status) {
         return {
           message: `Certificate for ID: ${req.input.id} is issued`,
         };
       } else {
         throw new TRPCError({
-          code: "INTERNAL_SERVER_ERROR",
-          message: "Transaction has failed to commit",
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Transaction has failed to commit',
         });
       }
     }),
@@ -44,7 +46,7 @@ export const appRouter = router({
         .object({
           id: z.number().nullish(),
         })
-        .nullish()
+        .nullish(),
     )
     .output(
       z
@@ -55,12 +57,15 @@ export const appRouter = router({
           grade: z.string(),
           date: z.string(),
         })
-        .nullish()
+        .nullish(),
     )
     .mutation(async (req) => {
+      console.log(req);
+
       if (req.input?.id) {
+        const instance: Contract = await getInstance();
         const certificate: string[] = await instance.Certificates(req.input.id);
-        console.log(certificate);
+        console.log('cert', certificate);
         if (certificate[0]) {
           return {
             id: req.input.id,
@@ -71,14 +76,14 @@ export const appRouter = router({
           };
         } else {
           throw new TRPCError({
-            code: "NOT_FOUND",
+            code: 'NOT_FOUND',
             message: `No certificate issued for ${req.input.id}`,
           });
         }
       } else {
         throw new TRPCError({
-          code: "BAD_REQUEST",
-          message: "Provide a valid certificate ID",
+          code: 'BAD_REQUEST',
+          message: 'Provide a valid certificate ID',
         });
       }
     }),
