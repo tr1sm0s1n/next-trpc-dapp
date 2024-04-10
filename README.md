@@ -26,29 +26,41 @@ cd next-trpc-dapp
 Install dependencies
 
 ```bash
-npm install
+pnpm install
 ```
 
 Test contract
 
 ```bash
-npm test
+pnpm test
 ```
 
 Run hardhat node on port 8545
 
 ```bash
-npm run node
+pnpm run node
 ```
 
 Deploy contract
 
 ```bash
-npm run deploy
+pnpm run deploy
 ```
 
 Start the application
 
 ```bash
-npm run dev
+pnpm run dev
 ```
+
+## 📜 License
+
+Click [here](./LICENSE.md).
+
+## 🎗️ Contributing
+
+Click [here](./CONTRIBUTING.md).
+
+## ⚖️ Code of Conduct
+
+Click [here](./CODE_OF_CONDUCT.md).
