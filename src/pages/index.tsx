@@ -1,5 +1,5 @@
-import Head from 'next/head';
-import { useState } from 'react';
+import Head from 'next/head'
+import { useState } from 'react'
 import {
   Input,
   FormControl,
@@ -17,23 +17,23 @@ import {
   Flex,
   Box,
   Spacer,
-} from '@chakra-ui/react';
-import { trpc } from '@/utils/trpc';
+} from '@chakra-ui/react'
+import { trpc } from '@/utils/trpc'
 
 export default function Home() {
-  const [id, setId] = useState<number | null>(null);
-  const [name, setName] = useState('');
-  const [course, setCourse] = useState('');
-  const [grade, setGrade] = useState('');
-  const [date, setDate] = useState('');
+  const [id, setId] = useState<number | null>(null)
+  const [name, setName] = useState('')
+  const [course, setCourse] = useState('')
+  const [grade, setGrade] = useState('')
+  const [date, setDate] = useState('')
 
-  const [param, setParam] = useState<number | null>(null);
+  const [param, setParam] = useState<number | null>(null)
 
-  const { isOpen: isM1, onOpen: openM1, onClose: closeM1 } = useDisclosure();
-  const { isOpen: isM2, onOpen: openM2, onClose: closeM2 } = useDisclosure();
+  const { isOpen: isM1, onOpen: openM1, onClose: closeM1 } = useDisclosure()
+  const { isOpen: isM2, onOpen: openM2, onClose: closeM2 } = useDisclosure()
 
-  const issue = trpc.issue.useMutation();
-  const fetch = trpc.fetch.useMutation();
+  const issue = trpc.issue.useMutation()
+  const fetch = trpc.fetch.useMutation()
 
   const handleSubmit = async () => {
     const certificate = {
@@ -42,21 +42,21 @@ export default function Home() {
       course,
       grade,
       date,
-    };
-    issue.mutate(certificate);
-    openM1();
-    setId(null);
-    setName('');
-    setCourse('');
-    setGrade('');
-    setDate('');
-  };
+    }
+    issue.mutate(certificate)
+    openM1()
+    setId(null)
+    setName('')
+    setCourse('')
+    setGrade('')
+    setDate('')
+  }
 
   const handleSearch = async () => {
-    fetch.mutate({ id: param });
-    openM2();
-    setParam(null);
-  };
+    fetch.mutate({ id: param })
+    openM2()
+    setParam(null)
+  }
 
   return (
     <>
@@ -223,5 +223,5 @@ export default function Home() {
         )}
       </Modal>
     </>
-  );
+  )
 }
