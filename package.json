@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "hardhat test",
+    "soltest": "hardhat test solidity",
+    "tstest": "hardhat test nodejs",
+    "test": "hardhat test solidity && hardhat test nodejs",
     "node": "hardhat node",
     "deploy": "hardhat ignition deploy ignition/modules/Cert.ts --network local",
     "fmt": "prettier --write ."
@@ -34,26 +36,13 @@
     "zod": "^3.25.28"
   },
   "devDependencies": {
-    "@nomicfoundation/hardhat-chai-matchers": "^2.0.8",
-    "@nomicfoundation/hardhat-ethers": "^3.0.8",
-    "@nomicfoundation/hardhat-ignition": "^0.15.11",
-    "@nomicfoundation/hardhat-ignition-ethers": "^0.15.11",
-    "@nomicfoundation/hardhat-network-helpers": "^1.0.12",
-    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
-    "@nomicfoundation/hardhat-verify": "^2.0.13",
-    "@typechain/ethers-v6": "^0.5.1",
-    "@typechain/hardhat": "^9.1.0",
-    "@types/chai": "^4.3.20",
-    "@types/mocha": "^10.0.10",
-    "@types/node": "18.11.18",
-    "chai": "^4.5.0",
-    "ethers": "^6.14.1",
-    "hardhat": "^2.24.0",
-    "hardhat-gas-reporter": "^1.0.10",
-    "prettier": "^3.5.3",
-    "solidity-coverage": "^0.8.16",
-    "ts-node": "^10.9.2",
-    "typechain": "^8.3.2",
-    "typescript": "4.9.5"
-  }
+    "@nomicfoundation/hardhat-ignition": "^3.0.5",
+    "@nomicfoundation/hardhat-toolbox-viem": "^5.0.1",
+    "@types/node": "^22.19.1",
+    "forge-std": "github:foundry-rs/forge-std#v1.9.4",
+    "hardhat": "^3.0.15",
+    "typescript": "~5.8.3",
+    "viem": "^2.39.3"
+  },
+  "type": "module"
 }

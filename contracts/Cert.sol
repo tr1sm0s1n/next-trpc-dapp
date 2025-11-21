@@ -1,16 +1,16 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.28;
 
 contract Cert {
     address admin;
-    event Issued(uint256, string, string);
+    event Issued(string indexed course, uint256 id, string grade);
 
     constructor() {
         admin = msg.sender;
     }
 
     modifier onlyAdmin() {
-        require(msg.sender == admin, "Access Denied");
+        require(msg.sender == admin, 'Access Denied');
         _;
     }
 
@@ -31,6 +31,6 @@ contract Cert {
         string memory _date
     ) public onlyAdmin {
         Certificates[_id] = Certificate(_name, _course, _grade, _date);
-        emit Issued(_id, _course, _grade);
+        emit Issued(_course, _id, _grade);
     }
 }
