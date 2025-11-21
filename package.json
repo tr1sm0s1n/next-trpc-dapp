@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "hardhat test",
+    "soltest": "hardhat test solidity",
+    "tstest": "hardhat test nodejs",
+    "test": "hardhat test solidity && hardhat test nodejs",
     "node": "hardhat node",
     "deploy": "hardhat ignition deploy ignition/modules/Cert.ts --network local",
     "fmt": "prettier --write ."
