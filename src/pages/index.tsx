@@ -2,35 +2,31 @@ import Head from 'next/head'
 import { useState } from 'react'
 import {
   Input,
-  FormControl,
+  Field,
   Container,
   Heading,
   Select,
   Button,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
+  Dialog,
   useDisclosure,
-  ModalBody,
   Flex,
-  Box,
   Spacer,
+  createListCollection,
+  Portal,
 } from '@chakra-ui/react'
 import { trpc } from '@/utils/trpc'
 
 export default function Home() {
   const [id, setId] = useState<number | null>(null)
   const [name, setName] = useState('')
-  const [course, setCourse] = useState('')
-  const [grade, setGrade] = useState('')
+  const [course, setCourse] = useState<string[]>([])
+  const [grade, setGrade] = useState<string[]>([])
   const [date, setDate] = useState('')
 
   const [param, setParam] = useState<number | null>(null)
 
-  const { isOpen: isM1, onOpen: openM1, onClose: closeM1 } = useDisclosure()
-  const { isOpen: isM2, onOpen: openM2, onClose: closeM2 } = useDisclosure()
+  const { open: isM1, onOpen: openM1, onClose: closeM1 } = useDisclosure()
+  const { open: isM2, onOpen: openM2, onClose: closeM2 } = useDisclosure()
 
   const issue = trpc.issue.useMutation()
   const fetch = trpc.fetch.useMutation()
@@ -39,16 +35,16 @@ export default function Home() {
     const certificate = {
       id,
       name,
-      course,
-      grade,
+      course: course[0],
+      grade: grade[0],
       date,
     }
     issue.mutate(certificate)
     openM1()
     setId(null)
     setName('')
-    setCourse('')
-    setGrade('')
+    setCourse([])
+    setGrade([])
     setDate('')
   }
 
@@ -68,13 +64,13 @@ export default function Home() {
       </Head>
       <section>
         <Container centerContent>
-          <Heading as="h2" size="xl" my={4} noOfLines={1}>
+          <Heading as="h2" size="xl" my={4}>
             Certificate DApp
           </Heading>
-          <Heading as="h4" size="md" my={2} noOfLines={1}>
+          <Heading as="h4" size="md" my={2}>
             Issue Certificate
           </Heading>
-          <FormControl my={2}>
+          <Field.Root my={2}>
             <Input
               type="number"
               min={0}
@@ -82,52 +78,78 @@ export default function Home() {
               onChange={(e) => setId(Number(e.currentTarget.value))}
               value={id ? id : ''}
             />
-          </FormControl>
-          <FormControl my={2}>
+          </Field.Root>
+          <Field.Root my={2}>
             <Input
               type="text"
               placeholder="Enter Candidate Name"
               onChange={(e) => setName(e.currentTarget.value)}
               value={name}
             />
-          </FormControl>
-          <Select
+          </Field.Root>
+          <Select.Root
+            collection={courses}
             my={2}
-            onChange={(e) => setCourse(e.currentTarget.value)}
             value={course}
+            onValueChange={(e) => setCourse(e.value)}
           >
-            <option hidden>Select Course</option>
-            <option value="Certified Blockchain Associate">
-              Certified Blockchain Associate
-            </option>
-            <option value="Certified Ethereum Developer">
-              Certified Ethereum Developer
-            </option>
-            <option value="Certified Hyperledger Fabric Developer">
-              Certified Hyperledger Fabric Developer
-            </option>
-            <option value="Certified Blockchain Architect">
-              Certified Blockchain Architect
-            </option>
-          </Select>
-          <Select
+            <Select.HiddenSelect />
+            <Select.Control>
+              <Select.Trigger>
+                <Select.ValueText placeholder="Select Course" />
+              </Select.Trigger>
+              <Select.IndicatorGroup>
+                <Select.Indicator />
+              </Select.IndicatorGroup>
+            </Select.Control>
+            <Portal>
+              <Select.Positioner>
+                <Select.Content>
+                  {courses.items.map((c) => (
+                    <Select.Item item={c} key={c.value}>
+                      {c.label}
+                      <Select.ItemIndicator />
+                    </Select.Item>
+                  ))}
+                </Select.Content>
+              </Select.Positioner>
+            </Portal>
+          </Select.Root>
+          <Select.Root
+            collection={grades}
             my={2}
-            onChange={(e) => setGrade(e.currentTarget.value)}
             value={grade}
+            onValueChange={(e) => setGrade(e.value)}
           >
-            <option hidden>Select Grade</option>
-            <option value="S">S</option>
-            <option value="A">A</option>
-            <option value="B">B</option>
-            <option value="C">C</option>
-          </Select>
-          <FormControl my={2}>
+            <Select.HiddenSelect />
+            <Select.Control>
+              <Select.Trigger>
+                <Select.ValueText placeholder="Select Grade" />
+              </Select.Trigger>
+              <Select.IndicatorGroup>
+                <Select.Indicator />
+              </Select.IndicatorGroup>
+            </Select.Control>
+            <Portal>
+              <Select.Positioner>
+                <Select.Content>
+                  {grades.items.map((g) => (
+                    <Select.Item item={g} key={g.value}>
+                      {g.label}
+                      <Select.ItemIndicator />
+                    </Select.Item>
+                  ))}
+                </Select.Content>
+              </Select.Positioner>
+            </Portal>
+          </Select.Root>
+          <Field.Root my={2}>
             <Input
               type="date"
               onChange={(e) => setDate(e.currentTarget.value)}
               value={date}
             />
-          </FormControl>
+          </Field.Root>
           <Button
             my={2}
             colorScheme="teal"
@@ -140,11 +162,11 @@ export default function Home() {
       </section>
       <section>
         <Container centerContent my={8}>
-          <Heading as="h4" size="md" my={2} noOfLines={1}>
+          <Heading as="h4" size="md" my={2}>
             Fetch Certificate
           </Heading>
           <Flex w="full">
-            <FormControl mx={2} my={2}>
+            <Field.Root mx={2} my={2}>
               <Input
                 type="number"
                 min={0}
@@ -152,7 +174,7 @@ export default function Home() {
                 onChange={(e) => setParam(Number(e.currentTarget.value))}
                 value={param ? param : ''}
               />
-            </FormControl>
+            </Field.Root>
             <Button
               mx={2}
               my={2}
@@ -165,63 +187,111 @@ export default function Home() {
           </Flex>
         </Container>
       </section>
-      <Modal isOpen={isM1} onClose={closeM1}>
-        <ModalOverlay />
-        {issue.isError ? (
-          <ModalContent>
-            <ModalHeader>Error</ModalHeader>
-            <ModalCloseButton />
-            <ModalBody>{issue.error?.message}</ModalBody>
-          </ModalContent>
-        ) : (
-          <ModalContent>
-            <ModalHeader>Success</ModalHeader>
-            <ModalCloseButton />
-            <ModalBody>{issue.data?.message}</ModalBody>
-          </ModalContent>
-        )}
-      </Modal>
-      <Modal size={'lg'} isOpen={isM2} onClose={closeM2}>
-        <ModalOverlay />
-        {fetch.isError ? (
-          <ModalContent>
-            <ModalHeader>Error</ModalHeader>
-            <ModalCloseButton />
-            <ModalBody>{fetch.error?.message}</ModalBody>
-          </ModalContent>
-        ) : (
-          <ModalContent>
-            <ModalHeader mx={'auto'}>Certificate</ModalHeader>
-            <ModalCloseButton />
-            <ModalBody>
-              <Container centerContent>
-                <Heading as="h4" size="md" mb={8} noOfLines={1}>
-                  AKA-DEMY
-                </Heading>
-                <p>This is to certify that</p>
-                <Heading as="h4" size="md" my={4} noOfLines={1}>
-                  {fetch.data?.name}
-                </Heading>
-                <p>has successfully completed</p>
-                <Heading as="h5" size="md" my={2} noOfLines={1}>
-                  {fetch.data?.course}
-                </Heading>
-                <p>with</p>
-                <Heading as="h5" size="md" my={2} noOfLines={1}>
-                  {fetch.data?.grade}
-                </Heading>
-              </Container>
-              <Flex mt={8} mb={4} mx={2}>
-                {/* <Box> */}
-                <p>Date: {fetch.data?.date}</p>
-                <Spacer />
-                <p>Certificate ID: {fetch.data?.id}</p>
-                {/* </Box> */}
-              </Flex>
-            </ModalBody>
-          </ModalContent>
-        )}
-      </Modal>
+      <Dialog.Root open={isM1} onOpenChange={closeM1}>
+        <Dialog.Backdrop />
+        <Dialog.Positioner>
+          {issue.isError ? (
+            <Dialog.Content>
+              <Dialog.Header>Error</Dialog.Header>
+              <Dialog.CloseTrigger />
+              <Dialog.Body>{issue.error?.message}</Dialog.Body>
+            </Dialog.Content>
+          ) : (
+            <Dialog.Content>
+              <Dialog.Header>Success</Dialog.Header>
+              <Dialog.CloseTrigger />
+              <Dialog.Body>{issue.data?.message}</Dialog.Body>
+            </Dialog.Content>
+          )}
+        </Dialog.Positioner>
+      </Dialog.Root>
+      <Dialog.Root size={'lg'} open={isM2} onOpenChange={closeM2}>
+        <Dialog.Backdrop />
+        <Dialog.Positioner>
+          {fetch.isError ? (
+            <Dialog.Content>
+              <Dialog.Header>Error</Dialog.Header>
+              <Dialog.CloseTrigger />
+              <Dialog.Body>{fetch.error?.message}</Dialog.Body>
+            </Dialog.Content>
+          ) : (
+            <Dialog.Content>
+              <Dialog.Header mx={'auto'}>Certificate</Dialog.Header>
+              <Dialog.CloseTrigger />
+              <Dialog.Body>
+                <Container centerContent>
+                  <Heading as="h4" size="md" mb={8}>
+                    AKA-DEMY
+                  </Heading>
+                  <p>This is to certify that</p>
+                  <Heading as="h4" size="md" my={4}>
+                    {fetch.data?.name}
+                  </Heading>
+                  <p>has successfully completed</p>
+                  <Heading as="h5" size="md" my={2}>
+                    {fetch.data?.course}
+                  </Heading>
+                  <p>with</p>
+                  <Heading as="h5" size="md" my={2}>
+                    {fetch.data?.grade}
+                  </Heading>
+                </Container>
+                <Flex mt={8} mb={4} mx={2}>
+                  <p>Date: {fetch.data?.date}</p>
+                  <Spacer />
+                  <p>Certificate ID: {fetch.data?.id}</p>
+                </Flex>
+              </Dialog.Body>
+            </Dialog.Content>
+          )}
+        </Dialog.Positioner>
+      </Dialog.Root>
     </>
   )
 }
+
+const courses = createListCollection({
+  items: [
+    {
+      label: 'Certified Blockchain Associate',
+      value: 'Certified Blockchain Associate',
+    },
+    {
+      label: 'Certified Ethereum Developer',
+      value: 'Certified Ethereum Developer',
+    },
+    {
+      label: 'Certified Hyperledger Fabric Developer',
+      value: 'Certified Hyperledger Fabric Developer',
+    },
+    {
+      label: 'Certified Blockchain Architect',
+      value: 'Certified Blockchain Architect',
+    },
+  ],
+})
+
+const grades = createListCollection({
+  items: [
+    {
+      label: 'S',
+      value: 'S',
+    },
+    {
+      label: 'A',
+      value: 'A',
+    },
+    {
+      label: 'B',
+      value: 'B',
+    },
+    {
+      label: 'C',
+      value: 'C',
+    },
+    {
+      label: 'D',
+      value: 'D',
+    },
+  ],
+})
