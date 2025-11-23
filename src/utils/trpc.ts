@@ -26,19 +26,21 @@ export const trpc = createTRPCNext<AppRouter>({
         httpBatchLink({
           /**
            * If you want to use SSR, you need to use the server's full URL
-           * @link https://trpc.io/docs/ssr
+           * @see https://trpc.io/docs/v11/ssr
            **/
           url: `${getBaseUrl()}/api/trpc`,
+          // You can pass any HTTP headers you wish here
+          async headers() {
+            return {
+              // authorization: getAuthCookie(),
+            }
+          },
         }),
       ],
-      /**
-       * @link https://tanstack.com/query/v4/docs/reference/QueryClient
-       **/
-      // queryClientConfig: { defaultOptions: { queries: { staleTime: 60 } } },
     }
   },
   /**
-   * @link https://trpc.io/docs/ssr
+   * @see https://trpc.io/docs/v11/ssr
    **/
   ssr: false,
 })

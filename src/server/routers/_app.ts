@@ -1,7 +1,7 @@
 import { z } from 'zod'
+import { waitForTransactionReceipt } from 'viem/actions'
 import { procedure, router } from '../trpc'
-import { getInstance, provider } from '@/utils/instance'
-import { Contract, Transaction } from 'ethers'
+import { client, contract } from '@/utils/contract'
 import { TRPCError } from '@trpc/server'
 
 export const appRouter = router({
@@ -18,17 +18,17 @@ export const appRouter = router({
     .mutation(async (req) => {
       console.log(req.input)
 
-      const instance: Contract = await getInstance()
-      const trx: Transaction = await instance.issue(
+      const hash = await contract.write.issue([
         req.input.id,
         req.input.name,
         req.input.course,
         req.input.grade,
         req.input.date,
-      )
-      const receipt = await provider.getTransactionReceipt(trx.hash!)
-      console.log(receipt)
-      if (!!receipt?.status) {
+      ])
+      const receipt = await waitForTransactionReceipt(client, { hash })
+      console.log('Receipt:', receipt)
+
+      if (receipt?.status == 'success') {
         return {
           message: `Certificate for ID: ${req.input.id} is issued`,
         }
@@ -63,9 +63,11 @@ export const appRouter = router({
       console.log(req)
 
       if (req.input?.id) {
-        const instance: Contract = await getInstance()
-        const certificate: string[] = await instance.Certificates(req.input.id)
-        console.log('cert', certificate)
+        const certificate = (await contract.read.Certificates([
+          req.input.id,
+        ])) as string[]
+        console.log('Certifcate:', certificate)
+
         if (certificate[0]) {
           return {
             id: req.input.id,
