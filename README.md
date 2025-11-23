@@ -9,7 +9,7 @@ DApp with end-to-end typesafe APIs for Smart Contract interaction.
 [![Solidity Badge](https://img.shields.io/badge/Solidity-363636?logo=solidity&logoColor=fff&style=for-the-badge)](https://soliditylang.org/)
 [![tRPC Badge](https://img.shields.io/badge/tRPC-2596BE?logo=trpc&logoColor=fff&style=for-the-badge)](https://trpc.io/)
 [![Zod Badge](https://img.shields.io/badge/Zod-3E67B1?logo=zod&logoColor=fff&style=for-the-badge)](https://zod.dev)
-[![Ethers Badge](https://img.shields.io/badge/Ethers-3C3C3D?logo=ethereum&logoColor=fff&style=for-the-badge)](https://docs.ethers.org/v6/)
+[![Viem Badge](https://img.shields.io/badge/Viem-3C3C3D?logo=ethereum&logoColor=fff&style=for-the-badge)](https://viem.sh/)
 [![Hardhat Badge](https://img.shields.io/badge/Hardhat-3C3C3D?logo=ethereum&logoColor=fff&style=for-the-badge)](https://hardhat.org/)
 [![Next.js Badge](https://img.shields.io/badge/Next.js-000?logo=nextdotjs&logoColor=fff&style=for-the-badge)](https://nextjs.org/)
 [![Chakra UI Badge](https://img.shields.io/badge/Chakra%20UI-319795?logo=chakraui&logoColor=fff&style=for-the-badge)](https://chakra-ui.com/)
@@ -52,15 +52,3 @@ Start the application
 ```bash
 pnpm run dev
 ```
-
-## 📜 License
-
-Click [here](./LICENSE.md).
-
-## 🎗️ Contributing
-
-Click [here](./CONTRIBUTING.md).
-
-## ⚖️ Code of Conduct
-
-Click [here](./CODE_OF_CONDUCT.md).
