@@ -74,7 +74,7 @@ describe('Cert', async () => {
 
     await viem.assertions.revertWith(
       certWithOther.write.issue([355n, 'Lisa', 'MBCC', 'B', '31-05-2025']),
-      'Access Denied'
+      'Access Denied',
     )
   })
 })
